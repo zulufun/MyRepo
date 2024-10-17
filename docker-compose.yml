@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   mongo:
-    image: mongo:latest
+    image: mongo:4.4
     container_name: project-mongo
     ports:
       - "27017:27017"
@@ -11,7 +11,7 @@ services:
     deploy:
       resources:
         limits:
-          # cpus: '0.5'  # Giới hạn sử dụng CPU
+          cpus: '0.3'  # Giới hạn sử dụng CPU
           # cpu_quota: 50000     # Giới hạn CPU (50ms)
           # cpu_period: 100000    # Thời gian chu kỳ (100ms)
           memory: 512M  # Giới hạn sử dụng RAM
@@ -20,12 +20,12 @@ services:
 
   backend:
     build:
-      context: ./BE_Node
+      context: ./BE_Node/
     container_name: project-backend
     ports:
       - "8000:8000"
     volumes:
-      - ./BTL_BE_Node/:/app
+      - ./BE_Node/:/app
     links:
       - mongo
     depends_on:
@@ -33,10 +33,10 @@ services:
     deploy:
       resources:
         limits:
-          # cpus: '0.5'  # Giới hạn sử dụng CPU
+          cpus: '0.3'  # Giới hạn sử dụng CPU
           # cpu_quota: 50000   # Giới hạn CPU (50ms)
           # cpu_period: 100000   # Thời gian chu kỳ (100ms)
-          memory: 1G  # Giới hạn sử dụng RAM
+          memory: 512M  # Giới hạn sử dụng RAM
           # memswap_limit: 1G        # Giới hạn swap tổng (RAM + swap)
 
   frontend:
@@ -47,12 +47,12 @@ services:
       - "3000:80"  # Chỉnh sửa port để phù hợp với Nginx
     volumes:
       - ./nckh-fe/:/app
-    depends_on:
-      - backend
+    # depends_on:
+    #   - backend
     deploy:
       resources:
         limits:
-          # cpus: '0.5'  # Giới hạn sử dụng CPU
+          cpus: '0.2'  # Giới hạn sử dụng CPU
           # cpu_quota: 50000     # Giới hạn CPU (50ms)
           # cpu_period: 100000   # Thời gian chu kỳ (100ms)
           memory: 512M  # Giới hạn sử dụng RAM
