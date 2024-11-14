@@ -17,7 +17,7 @@ COPY . .
 RUN npm run build
 
 # Sử dụng Nginx để phục vụ ứng dụng
-FROM nginx:alpine
+FROM nginx:1.23-alpine
 
 # Sao chép các file đã xây dựng từ bước trước vào thư mục phục vụ của Nginx
 COPY --from=build /app/build /usr/share/nginx/html
